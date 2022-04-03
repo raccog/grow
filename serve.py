@@ -62,6 +62,8 @@ if __name__ == '__main__':
         for ident in VARS.keys():
             print(ident)
         print('')
-    shutil.rmtree('stage')
+    p = Path('stage')
+    if p.is_dir():
+        shutil.rmtree(p)
     stage(PROD)
     stage(TEST)
