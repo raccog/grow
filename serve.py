@@ -40,9 +40,6 @@ def replace_vars(dirname):
             if DEBUG:
                 print(f'Replacing {ident} with {value}')
             subprocess.run(['sed', '-i', f's/{ident}/{value}/g', filename])
-    
-    if DEBUG:
-        print('')
 
 
 def stage(dirname):
@@ -51,7 +48,13 @@ def stage(dirname):
         os.mkdir(stage_path)
     copy_html(dirname)
     replace_vars(dirname)
-    shutil.copytree(stage_path.joinpath(dirname), Path('/var/www').joinpath(dirname), dirs_exist_ok=True)
+    src = stage_path.joinpath(dirname)
+    dst = Path('/var/www').joinpath(dirname)
+    
+    if DEBUG:
+        print(f'Copying {src} to {dst}...')
+        print('')
+    shutil.copytree(src, dst, dirs_exist_ok=True)
 
 
 

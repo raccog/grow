@@ -109,6 +109,7 @@
     $result = mysqli_query($link, $query) or die('Query failed: ' . mysql_error());
 
     // Create tables from nutrient data
+// TODO: Remove usage of $last_id
     $last_id = 0;
     while ($line = mysqli_fetch_row($result)) {
         // Create table header
