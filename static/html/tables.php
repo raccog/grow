@@ -108,21 +108,30 @@
     $query = 'select * from nutrient_data';
     $result = mysqli_query($link, $query) or die('Query failed: ' . mysql_error());
 
-    // Create tables from nutrient data
-// TODO: Remove usage of $last_id
-    $last_id = 0;
+    $data = array();
     while ($line = mysqli_fetch_row($result)) {
-        // Create table header
-        if ($last_id != $line[0]) {
-            if ($last_id != 0) {
-                echo "\t</tbody>\n
-                </table>\n
-                </div>\n";
-            }
-            $last_id = $line[0];
-            $name = $names[$last_id];
-            echo "<div class='tables' id='table$last_id' style='visibility: hidden; display: none'>\n
-            <h2>$name Nutrient Table</h2>\n
+        // Create array for plant if it does not exist
+        $id = $line[0];
+        if (!array_key_exists($id, $data)) {
+            $data[$id] = array();
+        }
+        unset($line[0]);
+
+        // Create indexed array from row data
+        $row = array();
+        foreach ($line as $column) {
+            array_push($row, $column);
+        }
+
+        // Add data point to plant
+        array_push($data[$id], $row);
+    }
+    mysqli_free_result($result);
+
+    foreach ($data as $id => $plant_data) {
+        $name = $names[$id];
+        echo "<div class='tables' id='table$id' style='visibility: hidden; display: none'>\n
+        <h2>$name Nutrient Table</h2>\n
             <table>\n
                 \t<thead>\n
                     \t\t<tr>\n
@@ -140,43 +149,51 @@
                     \t\t</tr>\n
                 \t</thead>\n
                 \t<tbody>\n";
+
+        foreach ($plant_data as $line) {
+            echo "\t<tr class='datarow'>\n";
+            // Convert row data
+            // Convert boolean
+            if ($line[2] == 1) {
+                $line[2] = "True";
+            } else {
+                $line[2] = "False";
+            }
+
+            // Convert week number to id
+            $week = $schedule[$line[4]];
+            $line[4] = $week[1];
+
+            // Save calimagic flag
+            $calimagic = $line[7];
+            unset($line[7]);
+
+            // Swap gallons with week
+            $gallons = $line[1];
+            $line[1] = $line[4];
+            $line[4] = $gallons;
+
+            // Calculate nutrient levels
+            $percent = $line[3] * 0.01;
+            array_push($line, $week[2] * $percent * $gallons);
+            array_push($line, $week[3] * $percent * $gallons);
+            array_push($line, $week[4] * $percent * $gallons);
+            if ($calimagic == 0) {
+                array_push($line, 0);
+            } else {
+                array_push($line, $week[5] * $percent * $gallons);
+            }
+
+            // Create table row
+            foreach ($line as $col_value) {
+                echo "\t\t<td>$col_value</td>\n";
+            }
+            echo "\t</tr>\n";
         }
-        echo "\t<tr class='datarow'>\n";
-
-        // Convert row data
-        unset($line[0]);
-        if ($line[3] == 1) {
-            $line[3] = "True";
-        } else {
-            $line[3] = "False";
-        }
-        $week = $schedule[$line[5]];
-        $line[5] = $week[1];
-
-        // Save calimagic flag
-        $calimagic = $line[8];
-
-        // Swap gallons with week
-        $gallons = $line[2];
-        $line[2] = $line[5];
-        $line[5] = $gallons;
-
-        // Calculate nutrient levels
-        $percent = $line[4] * 0.01;
-        $line[8] = $week[2] * $percent * $gallons;
-        $line[9] = $week[3] * $percent * $gallons;
-        $line[10] = $week[4] * $percent * $gallons;
-        if ($calimagic == 0) {
-            $line[11] = 0;
-        } else {
-            $line[11] = $week[5] * $percent * $gallons;
-        }
-
-        // Create table row
-        foreach ($line as $col_value) {
-            echo "\t\t<td>$col_value</td>\n";
-        }
-        echo "\t</tr>\n";
+        
+        echo "\t</tbody>\n
+        </table>\n
+        </div>\n";
     }
 
     // Free data
