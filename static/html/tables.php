@@ -128,6 +128,18 @@
     }
     mysqli_free_result($result);
 
+    // Sort nutrient records by timestamp
+    foreach ($data as $id) {
+        usort($data[$id], function ($a, $b) {
+            $a_val = (int)$a[0];
+            $b_val = (int)$b[0];
+
+            if ($a_val > $b_val) return 1;
+            if ($a_val < $b_val) return -1;
+            return 0;
+        });
+    }
+
     foreach ($data as $id => $plant_data) {
         $name = $names[$id];
         echo "<div class='tables' id='table$id' style='visibility: hidden; display: none'>\n
