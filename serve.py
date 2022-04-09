@@ -13,8 +13,9 @@ VARS = {
 DEBUG = False
 
 
-def copy_html(dirname):
+def copy_static_files(dirname):
     shutil.copytree(Path('static/html'), Path('stage').joinpath(dirname))
+    shutil.copytree(Path('static/php'), Path('stage').joinpath(dirname), dirs_exist_ok=True)
 
 
 def replace_vars(dirname):
@@ -46,7 +47,7 @@ def stage(dirname):
     stage_path = Path('stage')
     if not stage_path.is_dir():
         os.mkdir(stage_path)
-    copy_html(dirname)
+    copy_static_files(dirname)
     replace_vars(dirname)
     src = stage_path.joinpath(dirname)
     dst = Path('/var/www').joinpath(dirname)
