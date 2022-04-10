@@ -187,61 +187,61 @@ function select_chart(plant_id) {
 window.onload = function () {
 
 chart = new CanvasJS.Chart("chartContainer", {
-	title: {
-		text: "Nutrient Data"
-	},
-	axisX: {
-		valueFormatString: "D MMM YYYY",
-	},
+    title: {
+        text: "Nutrient Data"
+    },
+    axisX: {
+        valueFormatString: "D MMM YYYY",
+    },
     axisY: [{
         title: "Gallons",
-		lineColor: "#C24642",
-		tickColor: "#C24642",
-		labelFontColor: "#C24642",
-		titleFontColor: "#C24642",
+        lineColor: "#C24642",
+        tickColor: "#C24642",
+        labelFontColor: "#C24642",
+        titleFontColor: "#C24642",
         suffix: ' gal',
         gridThickness: 0
     },
     {
         title: 'Milliliters per Gallon (mL/gal)',
-		lineColor: "#369EAD",
-		tickColor: "#369EAD",
-		labelFontColor: "#369EAD",
-		titleFontColor: "#369EAD",
+        lineColor: "#369EAD",
+        tickColor: "#369EAD",
+        labelFontColor: "#369EAD",
+        titleFontColor: "#369EAD",
         includeZero: true,
         suffix: 'mL',
         gridThickness: 0
     }],
     axisY2: {
         title: "Percent",
-		lineColor: "#7F6084",
-		tickColor: "#7F6084",
-		labelFontColor: "#7F6084",
-		titleFontColor: "#7F6084",
+        lineColor: "#7F6084",
+        tickColor: "#7F6084",
+        labelFontColor: "#7F6084",
+        titleFontColor: "#7F6084",
         includeZero: true,
-		suffix: "%",
+        suffix: "%",
         gridThickness: 0
     },
-	toolTip: {
-		shared: true
-	},
-	legend: {
-		cursor: "pointer",
-		verticalAlign: "top",
-		horizontalAlign: "center",
-		dockInsidePlotArea: true,
-		itemclick: toogleDataSeries
-	},
-	data: [{
+    toolTip: {
+        shared: true
+    },
+    legend: {
+        cursor: "pointer",
+        verticalAlign: "top",
+        horizontalAlign: "center",
+        dockInsidePlotArea: true,
+        itemclick: toogleDataSeries
+    },
+    data: [{
         type: "line",
         name: "FloraMicro",
         lineThickness: 12,
         showInLegend: true,
         color: 'black',
-		markerSize: 25,
+        markerSize: 25,
         axisYIndex: 1,
         yValueFormatString: "0.0mL/gal",
-		dataPoints: fmt_data[2]['floramicro']
+        dataPoints: fmt_data[2]['floramicro']
     },
     {
         type: "line",
@@ -250,10 +250,10 @@ chart = new CanvasJS.Chart("chartContainer", {
         lineDashType: 'dash',
         color: 'magenta',
         lineThickness: 8,
-		markerSize: 16,
+        markerSize: 16,
         axisYIndex: 1,
         yValueFormatString: "0.0mL/gal",
-		dataPoints: fmt_data[2]['floragro']
+        dataPoints: fmt_data[2]['floragro']
     },
     {
         type: "line",
@@ -262,10 +262,10 @@ chart = new CanvasJS.Chart("chartContainer", {
         lineThickness: 6,
         color: '#808000',
         lineDashType: 'shortDash',
-		markerSize: 10,
+        markerSize: 10,
         axisYIndex: 1,
         yValueFormatString: "0.0mL/gal",
-		dataPoints: fmt_data[2]['florabloom']
+        dataPoints: fmt_data[2]['florabloom']
     },
     {
         type: "line",
@@ -273,31 +273,31 @@ chart = new CanvasJS.Chart("chartContainer", {
         showInLegend: true,
         lineThickness: 8,
         color: 'grey',
-		markerSize: 16,
+        markerSize: 16,
         axisYIndex: 1,
         yValueFormatString: "0.0mL/gal",
-		dataPoints: fmt_data[2]['calimagic']
+        dataPoints: fmt_data[2]['calimagic']
     },
     {
-		type:"line",
-		name: "Gallons",
-		showInLegend: true,
+        type:"line",
+        name: "Gallons",
+        showInLegend: true,
         color: 'blue',
         lineThickness: 4,
-		markerSize: 10,
-		yValueFormatString: "0 gal",
-		dataPoints: fmt_data[2]['gallons'],
-	},
+        markerSize: 10,
+        yValueFormatString: "0 gal",
+        dataPoints: fmt_data[2]['gallons'],
+    },
     {
         type: "line",
         name: "Percent",
         showInLegend: true,
         color: 'red',
         lineThickness: 4,
-		markerSize: 10,
-		dataPoints: fmt_data[2]['percent'],
+        markerSize: 10,
+        dataPoints: fmt_data[2]['percent'],
         axisYType: "secondary",
-		yValueFormatString: "#,##0.##\"%\"",
+        yValueFormatString: "#,##0.##\"%\"",
     },
     {
         type: "line",
@@ -305,10 +305,10 @@ chart = new CanvasJS.Chart("chartContainer", {
         showInLegend: true,
         color: 'cyan',
         lineThickness: 4,
-		markerSize: 10,
+        markerSize: 10,
         axisYIndex: 1,
         yValueFormatString: "0.0mL/gal",
-		dataPoints: fmt_data[2]['ph_up'],
+        dataPoints: fmt_data[2]['ph_up'],
     },
     {
         type: "line",
@@ -316,21 +316,21 @@ chart = new CanvasJS.Chart("chartContainer", {
         showInLegend: true,
         color: 'orange',
         lineThickness: 4,
-		markerSize: 10,
+        markerSize: 10,
         axisYIndex: 1,
         yValueFormatString: "0.0mL/gal",
-		dataPoints: fmt_data[2]['ph_down']
+        dataPoints: fmt_data[2]['ph_down']
     },]
 });
 chart.render();
 
 function toogleDataSeries(e){
-	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-		e.dataSeries.visible = false;
-	} else{
-		e.dataSeries.visible = true;
-	}
-	chart.render();
+    if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+        e.dataSeries.visible = false;
+    } else{
+        e.dataSeries.visible = true;
+    }
+    chart.render();
 }
 
 // Update chart to show selected plant

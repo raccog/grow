@@ -16,6 +16,7 @@ DEBUG = False
 def copy_static_files(dirname):
     shutil.copytree(Path('static/html'), Path('stage').joinpath(dirname))
     shutil.copytree(Path('static/php'), Path('stage').joinpath(dirname), dirs_exist_ok=True)
+    shutil.copytree(Path('static/js'), Path('stage').joinpath(dirname).joinpath('js'), dirs_exist_ok=True)
 
 
 def replace_vars(dirname):
