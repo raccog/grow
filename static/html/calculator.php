@@ -37,6 +37,11 @@ for (let plant_id in nutrient_data) {
 </script>
 
 <div>
+    <h3>Calculator Status</h3>
+    <p id="status"></p>
+</div>
+
+<div>
     <h3>Select Plant</h3>
 <?php
 // Get most recent id
