@@ -9,6 +9,7 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 SERVER_VERSION = "0.1.0"
+SERVER_TYPE = "$SERVER_TYPE"
 
 @app.route("/", methods=['GET'])
 @cross_origin()
@@ -16,6 +17,7 @@ def api_root():
     # Return api info
     return {
         "verision": SERVER_VERSION,
+        "server_type": SERVER_TYPE
     }
 
 @app.route("/nutrient_record.post", methods=['POST'])
@@ -49,7 +51,7 @@ def api_post_nutrient_record():
         host="localhost",
         user="grow",
         password="helloworld",
-        database="grow_test"
+        database="$DATABASE"
     )
     cursor = db.cursor()
 

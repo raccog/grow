@@ -1,0 +1,7 @@
+[Unit]
+Description=A testing API for the grow server.
+[Service]
+Type=simple
+ExecStart=/bin/bash /var/growapi/run_api.sh test
+[Install]
+WantedBy=multi-user.target

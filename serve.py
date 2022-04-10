@@ -3,20 +3,24 @@
 import os, subprocess, shutil, sys
 from pathlib import Path
 
-PROD = 'html'
-TEST = 'html_test'
+PROD = 'prod'
+TEST = 'test'
 
 VARS = {
-    '$SERVER_TYPE': ['Running', 'Test']
+    '$SERVER_TYPE': ['Running', 'Test'],
+    '$API_PORT': ['5000', '5001'],
+    '$DATABASE': ['grow', 'grow_test'],
 }
 
 DEBUG = False
 
 
 def copy_static_files(dirname):
-    shutil.copytree(Path('static/html'), Path('stage').joinpath(dirname))
-    shutil.copytree(Path('static/php'), Path('stage').joinpath(dirname), dirs_exist_ok=True)
-    shutil.copytree(Path('static/js'), Path('stage').joinpath(dirname).joinpath('js'), dirs_exist_ok=True)
+    dirname = Path('stage').joinpath(dirname)
+    shutil.copytree(Path('static/html'), dirname.joinpath('html'), dirs_exist_ok=True)
+    shutil.copytree(Path('static/php'), dirname.joinpath('html').joinpath('php'), dirs_exist_ok=True)
+    shutil.copytree(Path('static/js'), dirname.joinpath('html').joinpath('js'), dirs_exist_ok=True)
+    shutil.copytree(Path('api'), dirname.joinpath('api'), dirs_exist_ok=True)
 
 
 def replace_vars(dirname):
@@ -31,7 +35,7 @@ def replace_vars(dirname):
         else:
             print(f'Staging testing server in directory: {path}')
 
-    for filename in list(path.glob('**/*.html')) + list(path.glob('**/*.php')):
+    for filename in list(path.glob('**/*.html')) + list(path.glob('**/*.php')) + list(path.glob('**/*.js')) + list(path.glob('**/*.py')):
         if DEBUG:
             print(f'Staging file: {filename}')
         for ident in VARS.keys():
@@ -50,7 +54,7 @@ def stage(dirname):
         os.mkdir(stage_path)
     copy_static_files(dirname)
     replace_vars(dirname)
-    src = stage_path.joinpath(dirname)
+    src = stage_path.joinpath(dirname).joinpath('html')
     dst = Path('/var/www').joinpath(dirname)
     
     if DEBUG:
@@ -58,6 +62,23 @@ def stage(dirname):
         print('')
     shutil.copytree(src, dst, dirs_exist_ok=True)
 
+    src = stage_path.joinpath(dirname).joinpath('api')
+    dst = Path('/var/growapi').joinpath(dirname)
+    if not dst.is_dir():
+        os.makedirs(dst, exist_ok=True)
+
+    if DEBUG:
+        print(f'Copying {src} to {dst}...')
+        print('')
+    shutil.copytree(src, dst, dirs_exist_ok=True)
+
+    src = Path('run_api.sh')
+    dst = Path('/var/growapi')
+    if DEBUG:
+        print(f'Copying {src} to {dst}...')
+        print('')
+
+    shutil.copy(src, dst)
 
 
 if __name__ == '__main__':

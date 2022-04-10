@@ -1,0 +1,7 @@
+[Unit]
+Description=An API for the grow server.
+[Service]
+Type=simple
+ExecStart=/bin/bash /var/growapi/run_api.sh
+[Install]
+WantedBy=multi-user.target

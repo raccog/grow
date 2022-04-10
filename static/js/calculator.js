@@ -56,7 +56,7 @@ async function submit_record() {
         "ph_down": parseFloat(ph_down_ele.value),
         "plants": [[parseInt(plant_ele.value), replace_ele.checked]],
     };
-    let response = await fetch('http://127.0.0.1:5000/nutrient_record.post', {
+    let response = await fetch('http://192.168.0.67:$API_PORT/nutrient_record.post', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'

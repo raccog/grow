@@ -16,10 +16,10 @@
 <a href="index.html">Back to Index</a>
 <p>Calculate and post nutrient data here.</p>
 
-<?php include 'db_names.php';?>
-<?php include 'db_nutrient_schedule.php';?>
-<?php include 'db_nutrient_data.php';?>
-<?php include 'db_to_javascript.php';?>
+<?php include 'php/db_names.php';?>
+<?php include 'php/db_nutrient_schedule.php';?>
+<?php include 'php/db_nutrient_data.php';?>
+<?php include 'php/db_to_javascript.php';?>
 
 <?php 
 to_js("names", $names);

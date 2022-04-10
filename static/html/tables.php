@@ -48,7 +48,7 @@
     <h3>Select Plant</h3>
 <?php
     // Connect to database
-    $link = mysqli_connect('localhost', 'grow', 'helloworld', 'grow_test')
+    $link = mysqli_connect('localhost', 'grow', 'helloworld', '$DATABASE')
         or die('Could not connect: ' . mysql_error());
 
     // Query names and store in $names
@@ -82,7 +82,7 @@
 
 <?php
     // Connect to database
-    $link = mysqli_connect('localhost', 'grow', 'helloworld', 'grow_test')
+    $link = mysqli_connect('localhost', 'grow', 'helloworld', '$DATABASE')
         or die('Could not connect: ' . mysql_error());
 
     // Query nutrient schedule and store in $schedule
